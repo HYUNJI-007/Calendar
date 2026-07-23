@@ -394,6 +394,18 @@
   </div>
 </div>
 
+<!-- 커스텀 삭제 확인 모달 -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-card" style="text-align: center;">
+    <h4 style="font-size:15px; font-weight:800; color:var(--text-main); margin-top: 4px;">🗑️ 삭제 확인</h4>
+    <p id="confirmModalText" style="font-size:12px; color:var(--text-sub); line-height:1.4;">정말 삭제하시겠습니까?</p>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button style="flex:1; background:#EAEAEF; color:var(--text-sub); border:none; border-radius:8px; padding:9px; font-size:12px; font-weight:700; cursor:pointer;" onclick="closeConfirmModal()">취소</button>
+      <button id="confirmModalOkBtn" style="flex:1; background:var(--holiday); color:white; border:none; border-radius:8px; padding:9px; font-size:12px; font-weight:700; cursor:pointer;">삭제</button>
+    </div>
+  </div>
+</div>
+
 <script>
 let apiKey = localStorage.getItem('gcal_apikey') || '';
 let clientId = localStorage.getItem('gcal_clientid') || '';
@@ -421,6 +433,47 @@ const filterConfig = {
   'default': { emoji: '📌', bg: '#FFE8EE', color: '#E0658B' }
 };
 
+/* ===== 공통 토스트 알림 함수 ===== */
+function showToast(msg) {
+  const toast = document.createElement('div');
+  toast.innerText = msg;
+  toast.style.cssText = `
+    position: fixed; 
+    bottom: 30px; 
+    left: 50%; 
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85); 
+    color: #fff; 
+    padding: 12px 24px;
+    border-radius: 25px; 
+    font-size: 13.5px; 
+    font-weight: bold;
+    z-index: 99999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    white-space: nowrap;
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2200);
+}
+
+/* ===== 공통 커스텀 삭제 확인 모달 함수 ===== */
+let confirmCallback = null;
+function showConfirm(msg, onConfirm) {
+  document.getElementById('confirmModalText').innerText = msg;
+  confirmCallback = onConfirm;
+  document.getElementById('confirmModal').style.display = 'flex';
+}
+
+function closeConfirmModal() {
+  document.getElementById('confirmModal').style.display = 'none';
+  confirmCallback = null;
+}
+
+document.getElementById('confirmModalOkBtn').onclick = () => {
+  if (confirmCallback) confirmCallback();
+  closeConfirmModal();
+};
+
 function initOAuth() {
   if (window.google && clientId) {
     tokenClient = google.accounts.oauth2.initTokenClient({
@@ -430,7 +483,7 @@ function initOAuth() {
         if (response.access_token) {
           accessToken = response.access_token;
           localStorage.setItem('gcal_token', accessToken);
-          alert('구글 로그인 성공! 일정과 Tasks가 완벽하게 연동되었습니다.');
+          showToast('구글 로그인 성공! 일정과 Tasks가 연동되었습니다.');
           fetchData();
         }
       },
@@ -439,7 +492,7 @@ function initOAuth() {
 }
 
 function handleAuth() {
-  if (!clientId) { alert('Client ID를 먼저 입력하고 저장해 주세요.'); return; }
+  if (!clientId) { showToast('Client ID를 먼저 입력하고 저장해 주세요.'); return; }
   if (!tokenClient) initOAuth();
   if (tokenClient) tokenClient.requestAccessToken();
 }
@@ -487,10 +540,11 @@ function saveConfig() {
   localStorage.setItem('gcal_calid', calId); 
   closePanel(); 
   initOAuth(); updateFilters(); updateCalSelectOptions(); fetchData(); 
+  showToast('설정이 저장되었습니다!');
 }
 
 function changeMonth(diff) { currentViewDate.setMonth(currentViewDate.getMonth() + diff); renderCalendar(); fetchData(); }
-async function handleRefresh() { await fetchData(); }
+async function handleRefresh() { await fetchData(); showToast('새로고침 되었습니다.'); }
 
 function updateFilters() {
   const bar = document.getElementById('filterBar'); bar.innerHTML = '';
@@ -578,7 +632,7 @@ function setFormInputsToDate(dateStr) {
 
 /* ================= 드래그 앤 드롭 핵심 처리 함수 ================= */
 async function moveEventToDate(targetCalId, targetEventId, newDateStr) {
-  if (!accessToken) { alert('구글 로그인 권한이 필요합니다.'); return; }
+  if (!accessToken) { showToast('구글 로그인 권한이 필요합니다.'); return; }
 
   const targetEvent = allEvents.find(e => e.id === targetEventId);
   if (!targetEvent) return;
@@ -586,7 +640,6 @@ async function moveEventToDate(targetCalId, targetEventId, newDateStr) {
   let patchData = {};
 
   if (targetEvent.start.date) { 
-    // 하루 종일 일정 처리
     let oldStart = new Date(targetEvent.start.date);
     let oldEnd = new Date(targetEvent.end.date);
     let diffDays = Math.max(1, Math.round((oldEnd - oldStart) / (1000 * 60 * 60 * 24)));
@@ -602,7 +655,6 @@ async function moveEventToDate(targetCalId, targetEventId, newDateStr) {
       end: { date: nextDayStr }
     };
   } else { 
-    // 시간 지정 일정 처리
     const oldStart = new Date(targetEvent.start.dateTime);
     const oldEnd = new Date(targetEvent.end.dateTime);
     const duration = oldEnd.getTime() - oldStart.getTime();
@@ -632,12 +684,12 @@ async function moveEventToDate(targetCalId, targetEventId, newDateStr) {
     await fetchData();
   } catch (e) {
     console.error('일정 이동 중 오류 발생:', e);
-    alert('구글 권한이 만료되었거나 업데이트할 수 없습니다. 다시 로그인 해주세요.');
+    showToast('구글 권한이 만료되었습니다. 다시 로그인 해 주세요.');
   }
 }
 
 async function moveTodoToDate(todoId, newDateStr) {
-  if (!accessToken || !primaryTaskListId) { alert('구글 로그인 권한이 필요합니다.'); return; }
+  if (!accessToken || !primaryTaskListId) { showToast('구글 로그인 권한이 필요합니다.'); return; }
 
   const dueDateTime = new Date(newDateStr + 'T00:00:00.000Z').toISOString();
 
@@ -683,7 +735,6 @@ function renderCalendar() {
     if(dateStr === todayStr) div.classList.add('today');
     if(dateStr === selectedDateStr) div.classList.add('selected');
     
-    // ===== HTML5 Drag & Drop 구역 설정 =====
     div.ondragover = (e) => {
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
@@ -735,7 +786,6 @@ function renderCalendar() {
       eDiv.className = 'day-event-text'; eDiv.style.backgroundColor = meta.bg; eDiv.style.color = meta.color;
       eDiv.textContent = e.summary;
 
-      // ===== 일정 드래그 지정 =====
       eDiv.setAttribute('draggable', 'true');
       eDiv.ondragstart = (event) => {
         event.stopPropagation();
@@ -756,7 +806,6 @@ function renderCalendar() {
         tDiv.style.color = todoMeta.color;
         tDiv.textContent = `${t.done ? '✓' : todoMeta.emoji} ${t.text}`;
         
-        // ===== 투두 드래그 지정 =====
         tDiv.setAttribute('draggable', 'true');
         tDiv.ondragstart = (event) => {
           event.stopPropagation();
@@ -920,11 +969,12 @@ async function addEvent() {
     body: JSON.stringify(eventPayload)
   });
   document.getElementById('eventTitleInput').value = '';
+  showToast('새 일정이 등록되었습니다!');
   fetchData();
 }
 
 function openEditModal(calId, eventId) {
-  if (!accessToken) { alert('구글 로그인이 필요합니다.'); return; }
+  if (!accessToken) { showToast('구글 로그인이 필요합니다.'); return; }
   
   const targetEvent = allEvents.find(e => e.id === eventId);
   if (!targetEvent) return;
@@ -999,16 +1049,19 @@ async function saveEventEdit() {
   });
 
   closeModal();
+  showToast('일정이 수정되었습니다!');
   fetchData();
 }
 
-async function deleteEvent(calId, eventId) {
+function deleteEvent(calId, eventId) {
   if (!accessToken) return;
-  if (!confirm('이 일정을 삭제하시겠습니까? (구글 캘린더에서도 함께 삭제됩니다)')) return;
-  await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events/${encodeURIComponent(eventId)}`, {
-    method: 'DELETE', headers: { 'Authorization': `Bearer ${accessToken}` }
+  showConfirm('이 일정을 삭제하시겠습니까?\n(구글 캘린더에서도 삭제됩니다)', async () => {
+    await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events/${encodeURIComponent(eventId)}`, {
+      method: 'DELETE', headers: { 'Authorization': `Bearer ${accessToken}` }
+    });
+    showToast('일정이 삭제되었습니다.');
+    fetchData();
   });
-  fetchData();
 }
 
 function renderEventsToContainer(container) {
@@ -1073,6 +1126,7 @@ async function addTodo() {
 
   document.getElementById('todoInput').value = '';
   document.getElementById('todoDetailInput').value = '';
+  showToast('할 일이 추가되었습니다!');
   fetchData();
 }
 
@@ -1096,7 +1150,7 @@ async function toggleTodo(id) {
 }
 
 function openTodoEditModal(id) {
-  if (!accessToken) { alert('구글 로그인이 필요합니다.'); return; }
+  if (!accessToken) { showToast('구글 로그인이 필요합니다.'); return; }
   const target = todos.find(t => t.id === id);
   if (!target) return;
 
@@ -1136,16 +1190,19 @@ async function saveTodoEdit() {
   });
 
   closeTodoModal();
+  showToast('할 일이 수정되었습니다!');
   fetchData();
 }
 
-async function deleteTodo(id) {
+function deleteTodo(id) {
   if (!accessToken || !primaryTaskListId) return;
-  if (!confirm('이 할 일을 삭제하시겠습니까? (구글 할 일에서도 삭제됩니다)')) return;
-  await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${primaryTaskListId}/tasks/${id}`, {
-    method: 'DELETE', headers: { 'Authorization': `Bearer ${accessToken}` }
+  showConfirm('이 할 일을 삭제하시겠습니까?\n(구글 할 일에서도 삭제됩니다)', async () => {
+    await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${primaryTaskListId}/tasks/${id}`, {
+      method: 'DELETE', headers: { 'Authorization': `Bearer ${accessToken}` }
+    });
+    showToast('할 일이 삭제되었습니다.');
+    fetchData();
   });
-  fetchData();
 }
 
 function renderTodoListToContainer(container) {
@@ -1289,7 +1346,7 @@ function saveCurrentMemo() {
   let currentId = document.getElementById('currentMemoId').value;
 
   if (!content && title === '제목 없는 메모') {
-    alert('메모 내용을 입력해 주세요.'); return;
+    showToast('메모 내용을 입력해 주세요.'); return;
   }
 
   if (currentId) {
@@ -1310,27 +1367,8 @@ function saveCurrentMemo() {
     document.getElementById('currentMemoId').value = newMemo.id;
   }
 
-localStorage.setItem('oneul_quick_memos_v2', JSON.stringify(quickMemos));
-  
-  // 👇 기존 alert 대신 아래 코드를 넣으세요!
-  const toast = document.createElement('div');
-  toast.innerText = '메모가 저장되었습니다!';
-  toast.style.cssText = `
-    position: fixed; 
-    bottom: 30px; 
-    left: 50%; 
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.85); 
-    color: #fff; 
-    padding: 12px 24px;
-    border-radius: 25px; 
-    font-size: 14px; 
-    font-weight: bold;
-    z-index: 9999;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  `;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 2000); // 2초 뒤 자동으로 삭제
+  localStorage.setItem('oneul_quick_memos_v2', JSON.stringify(quickMemos));
+  showToast('메모가 저장되었습니다!');
 }
 
 function loadMemoToEdit(id) {
@@ -1345,17 +1383,18 @@ function loadMemoToEdit(id) {
 
 function deleteMemo(id, e) {
   if (e) e.stopPropagation();
-  if (!confirm('이 메모를 삭제하시겠습니까?')) return;
-
-  quickMemos = quickMemos.filter(m => m.id !== id);
-  localStorage.setItem('oneul_quick_memos_v2', JSON.stringify(quickMemos));
-  
-  if (quickMemos.length > 0) {
-    loadMemoToEdit(quickMemos[0].id);
-  } else {
-    createNewMemo();
-  }
-  renderMemoList();
+  showConfirm('이 메모를 삭제하시겠습니까?', () => {
+    quickMemos = quickMemos.filter(m => m.id !== id);
+    localStorage.setItem('oneul_quick_memos_v2', JSON.stringify(quickMemos));
+    showToast('메모가 삭제되었습니다.');
+    
+    if (quickMemos.length > 0) {
+      loadMemoToEdit(quickMemos[0].id);
+    } else {
+      createNewMemo();
+    }
+    renderMemoList();
+  });
 }
 
 function renderMemoList() {
