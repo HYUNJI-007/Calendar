@@ -1310,8 +1310,27 @@ function saveCurrentMemo() {
     document.getElementById('currentMemoId').value = newMemo.id;
   }
 
-  localStorage.setItem('oneul_quick_memos_v2', JSON.stringify(quickMemos));
-  alert('메모가 저장되었습니다!');
+localStorage.setItem('oneul_quick_memos_v2', JSON.stringify(quickMemos));
+  
+  // 👇 기존 alert 대신 아래 코드를 넣으세요!
+  const toast = document.createElement('div');
+  toast.innerText = '메모가 저장되었습니다!';
+  toast.style.cssText = `
+    position: fixed; 
+    bottom: 30px; 
+    left: 50%; 
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85); 
+    color: #fff; 
+    padding: 12px 24px;
+    border-radius: 25px; 
+    font-size: 14px; 
+    font-weight: bold;
+    z-index: 9999;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2000); // 2초 뒤 자동으로 삭제
 }
 
 function loadMemoToEdit(id) {
