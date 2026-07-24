@@ -97,7 +97,7 @@
   .cheer-quote-bar { text-align: center; font-size: 11.5px; font-weight: 600; color: var(--text-sub); padding-top: 10px; margin-top: 4px; border-top: 1px dashed var(--border); flex-shrink: 0; }
 
   .btn-group { display: flex; gap: 8px; flex-shrink: 0; }
-  .icon-btn { width: 36px; height: 36px; border-radius: 12px; border: 1px solid var(--border); background: #FFFFFF; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 16px; }
+  .icon-btn { width: 36px; height: 36px; border-radius: 12px; border: 1px solid var(--border); background: #FFFFFF; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 16px; text-decoration: none; }
   .icon-btn:hover { background: var(--accent-light); color: var(--accent); }
 
   .panel-tabs { display: flex; gap: 4px; margin-bottom: 16px; background: #EAEAEF; padding: 3px; border-radius: 10px; flex-shrink: 0; }
@@ -221,6 +221,11 @@
               <button class="nav-btn" onclick="changeMonth(1)">❯</button>
           </div>
           <div class="btn-group">
+              <!-- ✨ 추가된 '오늘 날짜로 이동' 버튼 -->
+              <button class="icon-btn" onclick="goToToday()" title="오늘 날짜로 이동">☀️</button>
+              
+              <!-- ✨ 추가된 'Wee-it 연동 사이트 이동' 버튼 (href에 이동할 실제 URL 주소를 입력해주세요) -->
+              <a href="C:\Users\user\Desktop\Wee-It_2026.html" class="icon-btn" target="_blank" rel="noopener noreferrer" title="Wee-it 이동">🤍</a
               <button class="icon-btn" id="addBtn" style="background:var(--accent); color:white; border:none;" onclick="window.open('https://calendar.google.com', '_blank')" title="구글 캘린더 홈으로 이동">
                 🏠
               </button>
@@ -432,6 +437,17 @@ const filterConfig = {
   'To Do': { emoji: '🍀', bg: '#E8F5E9', color: '#43A047' },
   'default': { emoji: '📌', bg: '#FFE8EE', color: '#E0658B' }
 };
+
+/* ===== 오늘 날짜 이동 함수 ===== */
+function goToToday() {
+  const now = new Date();
+  currentViewDate = new Date();
+  selectedDateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  setFormInputsToDate(selectedDateStr);
+  renderCalendar();
+  renderPanelContent();
+  showToast('오늘 날짜로 이동했습니다 ☀️');
+}
 
 /* ===== 공통 토스트 알림 함수 ===== */
 function showToast(msg) {
