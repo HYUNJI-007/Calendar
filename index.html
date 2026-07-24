@@ -220,24 +220,31 @@
               <h2 id="monthLabel"></h2>
               <button class="nav-btn" onclick="changeMonth(1)">❯</button>
           </div>
+
+          <!-- ✨ [요청사항 구현] 버튼 순서 변경: 집 - 하트 - 오늘 - 새고 - 설정 -->
           <div class="btn-group">
-              <!-- ✨ '오늘 날짜로 이동' 버튼 -->
-              <button class="icon-btn" onclick="goToToday()" title="오늘 날짜로 이동">☀️</button>
-              
-              <!-- ✨ 수정된 'Wee-it 연동' 버튼 (로컬 파일 실행) -->
-              <button class="icon-btn" onclick="openLocalWeeIt()" title="Wee-it 이동">🤍</button>
-              
-              <!-- ✨ 수정된 '구글 캘린더 홈 이동' 버튼 -->
+              <!-- 1. 집 (구글 캘린더 홈 이동) -->
               <button class="icon-btn" id="addBtn" style="background:var(--accent); color:white; border:none;" onclick="window.open('https://calendar.google.com', '_blank')" title="구글 캘린더 홈으로 이동">
                 🏠
               </button>
               
+              <!-- 2. 하트 (Wee-it 로컬 파일 이동 또는 선택) -->
+              <button class="icon-btn" onclick="openLocalWeeIt()" title="Wee-it">🤍</button>
+              
+              <!-- 3. 오늘 (오늘 날짜로 이동) -->
+              <button class="icon-btn" onclick="goToToday()" title="Today">☀️</button>
+              
+              <!-- 4. 새로고침 -->
               <button id="refreshBtn" class="icon-btn" onclick="handleRefresh()" title="새로고침">
                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="3" fill="none"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
               </button>
+              
+              <!-- 5. 설정 -->
               <button class="icon-btn" onclick="openConfig()" title="설정">
                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="3" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
               </button>
+
+              <!-- 상세 보기 패널 버튼 -->
               <button class="icon-btn" id="listToggleBtn" style="background:var(--accent-light); color:var(--accent); border:none;" onclick="toggleRightPanel('list')" title="상세보기 패널 열기">
                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="3" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
               </button>
@@ -348,6 +355,10 @@
           <input id="clientIdInput" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border); margin-bottom:10px; font-size:13px;" type="text" placeholder="Google OAuth Client ID">
           <input id="apiKeyInput" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border); margin-bottom:10px; font-size:13px;" type="text" placeholder="Google API Key">
           <textarea id="calIdInput" style="width:100%; height:120px; padding:10px; border-radius:10px; border:1px solid var(--border); resize:none; font-size:13px;" placeholder="CalendarID:이름 (쉼표구분)&#10;예: xxx@group.calendar.google.com:Wee"></textarea>
+          
+          <!-- ✨ 상대 경로 또는 사용자 지정 경로 연동 설정 항목 추가 -->
+          <input id="weeItPathInput" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border); margin-bottom:10px; font-size:13px;" type="text" placeholder="Wee-it 파일명 또는 상대경로 (기본: Wee-It_2026.html)">
+          
           <div style="font-size:11px; color:var(--text-sub); margin-bottom:10px; line-height:1.4;">
             * 처음에 1회 로그인하면 이후에는 수동 로그인 없이 자동으로 연동 상태가 유지됩니다.
           </div>
@@ -359,50 +370,44 @@
   </div>
 </div>
 
-<!-- 일정 수정 모달 -->
+<!-- hidden file input for selecting Wee-it html file -->
+<input type="file" id="weeItFileInput" accept=".html" style="display:none;" onchange="handleFileSelect(event)">
+
+<!-- 모달 생략 없이 유지 -->
 <div class="modal-overlay" id="editModal">
   <div class="modal-card">
     <h4 style="font-size:14px; font-weight:800; color:var(--text-main);">📅 일정 정보 수정</h4>
     <input type="hidden" id="editCalId">
     <input type="hidden" id="editEventId">
-    
     <input type="text" id="editTitleInput" class="todo-input" placeholder="일정 제목">
-    
     <label class="allday-check-label">
       <input type="checkbox" id="editAllDayCheckbox" onchange="toggleEditAllDayMode()"> 하루 종일
     </label>
-
     <div class="todo-row" id="editTimeRow">
       <input type="datetime-local" id="editStartInput" class="todo-date-input">
       <input type="datetime-local" id="editEndInput" class="todo-date-input">
     </div>
-
     <div class="todo-row" id="editDateRow" style="display:none;">
       <input type="date" id="editStartDateInput" class="todo-date-input">
       <input type="date" id="editEndDateInput" class="todo-date-input">
     </div>
-
     <button class="todo-add-btn" onclick="saveEventEdit()">저장 및 구글 연동</button>
     <button style="background:#EAEAEF; color:var(--text-sub); border:none; border-radius:8px; padding:8px; font-size:12px; font-weight:700; cursor:pointer;" onclick="closeModal()">취소</button>
   </div>
 </div>
 
-<!-- 투두 전용 수정 모달 -->
 <div class="modal-overlay" id="editTodoModal">
   <div class="modal-card">
     <h4 style="font-size:14px; font-weight:800; color:var(--text-main);">🍀 To Do 수정</h4>
     <input type="hidden" id="editTodoId">
-    
     <input type="text" id="editTodoTitleInput" class="todo-input" placeholder="할 일 제목">
     <input type="date" id="editTodoDateInput" class="todo-date-input">
     <textarea id="editTodoDetailInput" class="todo-input" style="height:70px; resize:none;" placeholder="세부 메모 입력"></textarea>
-
     <button class="todo-add-btn" onclick="saveTodoEdit()">저장 및 Tasks 연동</button>
     <button style="background:#EAEAEF; color:var(--text-sub); border:none; border-radius:8px; padding:8px; font-size:12px; font-weight:700; cursor:pointer;" onclick="closeTodoModal()">취소</button>
   </div>
 </div>
 
-<!-- 커스텀 삭제 확인 모달 -->
 <div class="modal-overlay" id="confirmModal">
   <div class="modal-card" style="text-align: center;">
     <h4 style="font-size:15px; font-weight:800; color:var(--text-main); margin-top: 4px;">🗑️ 삭제 확인</h4>
@@ -418,6 +423,7 @@
 let apiKey = localStorage.getItem('gcal_apikey') || '';
 let clientId = localStorage.getItem('gcal_clientid') || '';
 let calId = localStorage.getItem('gcal_calid') || '';
+let weeItPath = localStorage.getItem('wee_it_path') || 'Wee-It_2026.html';
 let accessToken = localStorage.getItem('gcal_token') || '';
 
 let allEvents = [];
@@ -441,10 +447,26 @@ const filterConfig = {
   'default': { emoji: '📌', bg: '#FFE8EE', color: '#E0658B' }
 };
 
-/* ===== 로컬 파일 열기 (Wee-it) 함수 ===== */
+/* ===== ✨ 수정된 Wee-it 열기 기능 (CORS 브라우저 보안 이슈 해결) ===== */
 function openLocalWeeIt() {
-  const filePath = "file:///C:/Users/user/Desktop/Wee-It_2026.html";
-  window.open(filePath, '_blank');
+  const targetPath = localStorage.getItem('wee_it_path') || 'Wee-It_2026.html';
+  
+  // 상대 경로로 먼저 열기 시도 (동일 폴더 위치)
+  const win = window.open(targetPath, '_blank');
+  
+  // 팝업이 블락되었거나 로컬 파일 제약 시 파일 선택창으로 유연하게 열기
+  if (!win || win.closed || typeof win.closed == 'undefined') {
+    showToast('⚠️ 파일 선택창에서 Wee-it 파일을 선택해주세요.');
+    document.getElementById('weeItFileInput').click();
+  }
+}
+
+function handleFileSelect(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL, '_blank');
+  }
 }
 
 /* ===== 오늘 날짜 이동 함수 ===== */
@@ -481,7 +503,6 @@ function showToast(msg) {
   setTimeout(() => toast.remove(), 2200);
 }
 
-/* ===== 공통 커스텀 삭제 확인 모달 함수 ===== */
 let confirmCallback = null;
 function showConfirm(msg, onConfirm) {
   document.getElementById('confirmModalText').innerText = msg;
@@ -499,7 +520,6 @@ document.getElementById('confirmModalOkBtn').onclick = () => {
   closeConfirmModal();
 };
 
-/* ===== OAuth 인증 및 자동 토큰 갱신 기능 ===== */
 function initOAuth() {
   if (window.google && clientId) {
     tokenClient = google.accounts.oauth2.initTokenClient({
@@ -511,10 +531,7 @@ function initOAuth() {
           localStorage.setItem('gcal_token', accessToken);
           const expireTime = Date.now() + 3300 * 1000;
           localStorage.setItem('gcal_token_expires', expireTime);
-
           fetchData();
-        } else if (response.error) {
-          console.warn("백그라운드 자동 인증 실패, 사용자 수동 로그인 필요", response);
         }
       },
     });
@@ -578,12 +595,19 @@ function openConfig() {
   document.getElementById('apiKeyInput').value = apiKey; 
   document.getElementById('clientIdInput').value = clientId; 
   document.getElementById('calIdInput').value = calId; 
+  if(document.getElementById('weeItPathInput')) {
+    document.getElementById('weeItPathInput').value = weeItPath;
+  }
 }
 
 function saveConfig() { 
   apiKey = document.getElementById('apiKeyInput').value.trim(); 
   clientId = document.getElementById('clientIdInput').value.trim(); 
   calId = document.getElementById('calIdInput').value.trim(); 
+  if(document.getElementById('weeItPathInput')) {
+    weeItPath = document.getElementById('weeItPathInput').value.trim() || 'Wee-It_2026.html';
+    localStorage.setItem('wee_it_path', weeItPath);
+  }
   localStorage.setItem('gcal_apikey', apiKey); 
   localStorage.setItem('gcal_clientid', clientId); 
   localStorage.setItem('gcal_calid', calId); 
@@ -683,54 +707,36 @@ function setFormInputsToDate(dateStr) {
   document.getElementById('eventEndDateInput').value = dateStr;
 }
 
-/* ================= 드래그 앤 드롭 핵심 처리 함수 ================= */
 async function moveEventToDate(targetCalId, targetEventId, newDateStr) {
   if (!accessToken) { showToast('구글 로그인 권한이 필요합니다.'); return; }
-
   const targetEvent = allEvents.find(e => e.id === targetEventId);
   if (!targetEvent) return;
 
   let patchData = {};
-
   if (targetEvent.start.date) { 
     let oldStart = new Date(targetEvent.start.date);
     let oldEnd = new Date(targetEvent.end.date);
     let diffDays = Math.max(1, Math.round((oldEnd - oldStart) / (1000 * 60 * 60 * 24)));
-
     let newStart = new Date(newDateStr);
     let newEnd = new Date(newStart);
     newEnd.setDate(newEnd.getDate() + diffDays);
-
     let nextDayStr = `${newEnd.getFullYear()}-${String(newEnd.getMonth()+1).padStart(2,'0')}-${String(newEnd.getDate()).padStart(2,'0')}`;
-
-    patchData = {
-      start: { date: newDateStr },
-      end: { date: nextDayStr }
-    };
+    patchData = { start: { date: newDateStr }, end: { date: nextDayStr } };
   } else { 
     const oldStart = new Date(targetEvent.start.dateTime);
     const oldEnd = new Date(targetEvent.end.dateTime);
     const duration = oldEnd.getTime() - oldStart.getTime();
-
     const [year, month, day] = newDateStr.split('-').map(Number);
     const newStart = new Date(oldStart);
     newStart.setFullYear(year, month - 1, day);
-
     const newEnd = new Date(newStart.getTime() + duration);
-
-    patchData = {
-      start: { dateTime: newStart.toISOString() },
-      end: { dateTime: newEnd.toISOString() }
-    };
+    patchData = { start: { dateTime: newStart.toISOString() }, end: { dateTime: newEnd.toISOString() } };
   }
 
   try {
     const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(targetCalId)}/events/${encodeURIComponent(targetEventId)}`, {
       method: 'PATCH',
-      headers: { 
-        'Authorization': `Bearer ${accessToken}`, 
-        'Content-Type': 'application/json' 
-      },
+      headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(patchData)
     });
     if(!res.ok) {
@@ -745,16 +751,11 @@ async function moveEventToDate(targetCalId, targetEventId, newDateStr) {
 
 async function moveTodoToDate(todoId, newDateStr) {
   if (!accessToken || !primaryTaskListId) { showToast('구글 로그인 권한이 필요합니다.'); return; }
-
   const dueDateTime = new Date(newDateStr + 'T00:00:00.000Z').toISOString();
-
   try {
     const res = await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${primaryTaskListId}/tasks/${todoId}`, {
       method: 'PATCH',
-      headers: { 
-        'Authorization': `Bearer ${accessToken}`, 
-        'Content-Type': 'application/json' 
-      },
+      headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ due: dueDateTime })
     });
     if(!res.ok) {
@@ -793,47 +794,25 @@ function renderCalendar() {
     if(dateStr === todayStr) div.classList.add('today');
     if(dateStr === selectedDateStr) div.classList.add('selected');
     
-    div.ondragover = (e) => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      div.classList.add('drag-over');
-    };
-
-    div.ondragleave = () => {
-      div.classList.remove('drag-over');
-    };
-
+    div.ondragover = (e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; div.classList.add('drag-over'); };
+    div.ondragleave = () => { div.classList.remove('drag-over'); };
     div.ondrop = async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      div.classList.remove('drag-over');
-
+      e.preventDefault(); e.stopPropagation(); div.classList.remove('drag-over');
       let rawData = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text');
       if (!rawData) return;
-
       try {
         const data = JSON.parse(rawData);
-        if (data.type === 'event') {
-          await moveEventToDate(data.calId, data.eventId, dateStr);
-        } else if (data.type === 'todo') {
-          await moveTodoToDate(data.todoId, dateStr);
-        }
-      } catch (err) {
-        console.error('드롭 오작동:', err);
-      }
+        if (data.type === 'event') await moveEventToDate(data.calId, data.eventId, dateStr);
+        else if (data.type === 'todo') await moveTodoToDate(data.todoId, dateStr);
+      } catch (err) {}
     };
 
     const numSpan = document.createElement('div'); numSpan.className = 'day-num'; numSpan.textContent = d;
     div.appendChild(numSpan);
     
     const isTodoFilter = (currentFilter === 'To Do');
-    
-    const dayEvents = isTodoFilter ? [] : allEvents.filter(e => isDateInEventRange(dateStr, e))
-                                .filter(e => currentFilter === '전체' || e.nickname === currentFilter);
-    
-    const dayTodos = (currentFilter === '전체' || isTodoFilter) 
-      ? todos.filter(t => t.date === dateStr) 
-      : [];
+    const dayEvents = isTodoFilter ? [] : allEvents.filter(e => isDateInEventRange(dateStr, e)).filter(e => currentFilter === '전체' || e.nickname === currentFilter);
+    const dayTodos = (currentFilter === '전체' || isTodoFilter) ? todos.filter(t => t.date === dateStr) : [];
 
     let totalItemsCount = dayEvents.length + dayTodos.length;
     let renderedCount = 0;
@@ -843,15 +822,12 @@ function renderCalendar() {
       const meta = getFilterMeta(e.nickname);
       eDiv.className = 'day-event-text'; eDiv.style.backgroundColor = meta.bg; eDiv.style.color = meta.color;
       eDiv.textContent = e.summary;
-
       eDiv.setAttribute('draggable', 'true');
       eDiv.ondragstart = (event) => {
         event.stopPropagation();
-        const payload = JSON.stringify({ type: 'event', calId: e.calId, eventId: e.id });
-        event.dataTransfer.setData('text/plain', payload);
+        event.dataTransfer.setData('text/plain', JSON.stringify({ type: 'event', calId: e.calId, eventId: e.id }));
         event.dataTransfer.effectAllowed = 'move';
       };
-
       div.appendChild(eDiv); renderedCount++;
     });
 
@@ -860,25 +836,16 @@ function renderCalendar() {
         const tDiv = document.createElement('div'); 
         const todoMeta = filterConfig['To Do'];
         tDiv.className = `day-event-text todo-clickable ${t.done ? 'completed' : ''}`;
-        tDiv.style.backgroundColor = todoMeta.bg; 
-        tDiv.style.color = todoMeta.color;
+        tDiv.style.backgroundColor = todoMeta.bg; tDiv.style.color = todoMeta.color;
         tDiv.textContent = `${t.done ? '✓' : todoMeta.emoji} ${t.text}`;
-        
         tDiv.setAttribute('draggable', 'true');
         tDiv.ondragstart = (event) => {
           event.stopPropagation();
-          const payload = JSON.stringify({ type: 'todo', todoId: t.id });
-          event.dataTransfer.setData('text/plain', payload);
+          event.dataTransfer.setData('text/plain', JSON.stringify({ type: 'todo', todoId: t.id }));
           event.dataTransfer.effectAllowed = 'move';
         };
-
-        tDiv.onclick = (e) => {
-          e.stopPropagation();
-          toggleTodo(t.id);
-        };
-
-        div.appendChild(tDiv); 
-        renderedCount++;
+        tDiv.onclick = (e) => { e.stopPropagation(); toggleTodo(t.id); };
+        div.appendChild(tDiv); renderedCount++;
       }
     });
 
@@ -888,11 +855,7 @@ function renderCalendar() {
     }
     
     div.onclick = () => { 
-      selectedDateStr = dateStr; 
-      setFormInputsToDate(dateStr);
-      renderCalendar(); 
-      renderPanelContent(); 
-      toggleRightPanel('list'); 
+      selectedDateStr = dateStr; setFormInputsToDate(dateStr); renderCalendar(); renderPanelContent(); toggleRightPanel('list'); 
     };
     grid.appendChild(div);
   }
@@ -936,39 +899,23 @@ async function fetchGoogleTasks() {
     const listRes = await fetch('https://tasks.googleapis.com/tasks/v1/users/@me/lists', {
       headers: { 'Authorization': `Bearer ${accessToken}` }
     });
-    
-    if (listRes.status === 401) {
-      checkAndRefreshToken();
-      return;
-    }
-    
+    if (listRes.status === 401) { checkAndRefreshToken(); return; }
     const listData = await listRes.json();
-    
     if(listData.items && listData.items.length > 0) {
       primaryTaskListId = listData.items[0].id;
-
       const taskRes = await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${primaryTaskListId}/tasks?showCompleted=true&showHidden=true`, {
         headers: { 'Authorization': `Bearer ${accessToken}` }
       });
       const taskData = await taskRes.json();
-      
       let fetchedTodos = [];
       if(taskData.items) {
         taskData.items.forEach(t => {
-          fetchedTodos.push({
-            id: t.id,
-            text: t.title,
-            detail: t.notes || '',
-            date: t.due ? t.due.slice(0,10) : '',
-            done: t.status === 'completed'
-          });
+          fetchedTodos.push({ id: t.id, text: t.title, detail: t.notes || '', date: t.due ? t.due.slice(0,10) : '', done: t.status === 'completed' });
         });
       }
       todos = fetchedTodos;
     }
-  } catch (e) {
-    console.error("Tasks 로드 실패", e);
-  }
+  } catch (e) {}
 }
 
 function switchRightTab(tab) {
@@ -998,32 +945,26 @@ async function addEvent() {
   const title = document.getElementById('eventTitleInput').value.trim();
   const targetCalId = document.getElementById('eventCalSelect').value;
   const isAllDay = document.getElementById('allDayCheckbox').checked;
-
   if (!title || !accessToken || !targetCalId) return;
 
   let eventPayload = { summary: title };
-
   if (isAllDay) {
     let startDate = document.getElementById('eventStartDateInput').value || selectedDateStr;
     let endDate = document.getElementById('eventEndDateInput').value || startDate;
-
     let endObj = new Date(endDate);
     endObj.setDate(endObj.getDate() + 1);
     let nextDayStr = `${endObj.getFullYear()}-${String(endObj.getMonth()+1).padStart(2,'0')}-${String(endObj.getDate()).padStart(2,'0')}`;
-
     eventPayload.start = { date: startDate };
     eventPayload.end = { date: nextDayStr };
   } else {
     let startVal = document.getElementById('eventStartInput').value;
     let endVal = document.getElementById('eventEndInput').value;
-
     if (startVal && endVal) {
       eventPayload.start = { dateTime: `${startVal}:00+09:00` };
       eventPayload.end = { dateTime: `${endVal}:00+09:00` };
     } else {
       let dateStr = selectedDateStr || new Date().toISOString().slice(0, 10);
-      eventPayload.start = { date: dateStr }; 
-      eventPayload.end = { date: dateStr };
+      eventPayload.start = { date: dateStr }; eventPayload.end = { date: dateStr };
     }
   }
 
@@ -1039,7 +980,6 @@ async function addEvent() {
 
 function openEditModal(calId, eventId) {
   if (!accessToken) { showToast('구글 로그인이 필요합니다.'); return; }
-  
   const targetEvent = allEvents.find(e => e.id === eventId);
   if (!targetEvent) return;
 
@@ -1059,47 +999,36 @@ function openEditModal(calId, eventId) {
   } else {
     const startIso = new Date(targetEvent.start.dateTime);
     const endIso = new Date(targetEvent.end.dateTime);
-
     const formatLocal = (d) => {
       const pad = n => String(n).padStart(2, '0');
       return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
     };
-
     document.getElementById('editStartInput').value = formatLocal(startIso);
     document.getElementById('editEndInput').value = formatLocal(endIso);
   }
-
   document.getElementById('editModal').style.display = 'flex';
 }
 
-function closeModal() {
-  document.getElementById('editModal').style.display = 'none';
-}
+function closeModal() { document.getElementById('editModal').style.display = 'none'; }
 
 async function saveEventEdit() {
   const targetCalId = document.getElementById('editCalId').value;
   const targetEventId = document.getElementById('editEventId').value;
   const newTitle = document.getElementById('editTitleInput').value.trim();
   const isAllDay = document.getElementById('editAllDayCheckbox').checked;
-
   if (!newTitle) return;
 
   let patchData = { summary: newTitle };
-
   if (isAllDay) {
     let startDate = document.getElementById('editStartDateInput').value;
     let endDate = document.getElementById('editEndDateInput').value || startDate;
-
     let endObj = new Date(endDate);
     endObj.setDate(endObj.getDate() + 1);
     let nextDayStr = `${endObj.getFullYear()}-${String(endObj.getMonth()+1).padStart(2,'0')}-${String(endObj.getDate()).padStart(2,'0')}`;
-
-    patchData.start = { date: startDate };
-    patchData.end = { date: nextDayStr };
+    patchData.start = { date: startDate }; patchData.end = { date: nextDayStr };
   } else {
     let startVal = document.getElementById('editStartInput').value;
     let endVal = document.getElementById('editEndInput').value;
-
     if (startVal && endVal) {
       patchData.start = { dateTime: `${startVal}:00+09:00` };
       patchData.end = { dateTime: `${endVal}:00+09:00` };
@@ -1142,11 +1071,9 @@ function renderEventsToContainer(container) {
     const meta = getFilterMeta(e.nickname);
     const card = document.createElement('div'); 
     card.style.cssText = 'padding:12px; background:white; border-radius:12px; margin-bottom:8px; border:1px solid var(--border); cursor:grab;';
-    
     card.setAttribute('draggable', 'true');
     card.ondragstart = (event) => {
-      const payload = JSON.stringify({ type: 'event', calId: e.calId, eventId: e.id });
-      event.dataTransfer.setData('text/plain', payload);
+      event.dataTransfer.setData('text/plain', JSON.stringify({ type: 'event', calId: e.calId, eventId: e.id }));
       event.dataTransfer.effectAllowed = 'move';
     };
 
@@ -1177,15 +1104,10 @@ async function addTodo() {
   }
 
   const dueDateTime = new Date(targetDate + 'T00:00:00.000Z').toISOString();
-
   await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${primaryTaskListId}/tasks`, {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      title: text,
-      notes: detail,
-      due: dueDateTime
-    })
+    body: JSON.stringify({ title: text, notes: detail, due: dueDateTime })
   });
 
   document.getElementById('todoInput').value = '';
@@ -1200,7 +1122,6 @@ async function toggleTodo(id) {
   if (!targetTodo) return;
 
   const newStatus = targetTodo.done ? 'needsAction' : 'completed';
-
   targetTodo.done = !targetTodo.done;
   renderCalendar();
   renderPanelContent();
@@ -1222,13 +1143,10 @@ function openTodoEditModal(id) {
   document.getElementById('editTodoTitleInput').value = target.text;
   document.getElementById('editTodoDateInput').value = target.date || selectedDateStr || '';
   document.getElementById('editTodoDetailInput').value = target.detail || '';
-
   document.getElementById('editTodoModal').style.display = 'flex';
 }
 
-function closeTodoModal() {
-  document.getElementById('editTodoModal').style.display = 'none';
-}
+function closeTodoModal() { document.getElementById('editTodoModal').style.display = 'none'; }
 
 async function saveTodoEdit() {
   const id = document.getElementById('editTodoId').value;
@@ -1238,14 +1156,8 @@ async function saveTodoEdit() {
 
   if (!newText || !accessToken || !primaryTaskListId) return;
 
-  let patchBody = {
-    title: newText,
-    notes: newDetail
-  };
-
-  if (newDate) {
-    patchBody.due = new Date(newDate + 'T00:00:00.000Z').toISOString();
-  }
+  let patchBody = { title: newText, notes: newDetail };
+  if (newDate) patchBody.due = new Date(newDate + 'T00:00:00.000Z').toISOString();
 
   await fetch(`https://tasks.googleapis.com/tasks/v1/lists/${primaryTaskListId}/tasks/${id}`, {
     method: 'PATCH',
@@ -1280,11 +1192,9 @@ function renderTodoListToContainer(container) {
   displayTodos.forEach(t => {
     const item = document.createElement('div');
     item.className = `todo-item ${t.done ? 'completed' : ''}`;
-    
     item.setAttribute('draggable', 'true');
     item.ondragstart = (event) => {
-      const payload = JSON.stringify({ type: 'todo', todoId: t.id });
-      event.dataTransfer.setData('text/plain', payload);
+      event.dataTransfer.setData('text/plain', JSON.stringify({ type: 'todo', todoId: t.id }));
       event.dataTransfer.effectAllowed = 'move';
     };
 
@@ -1312,15 +1222,11 @@ function renderTodoListToContainer(container) {
 function initQuickMemo() {
   const isMemoOpen = localStorage.getItem('oneul_quick_memo_open') !== 'false';
   const memoToggle = document.getElementById('memoToggle');
-
   memoToggle.checked = isMemoOpen;
   applyMemoState(isMemoOpen);
 
-  if (quickMemos.length === 0) {
-    createNewMemo();
-  } else {
-    loadMemoToEdit(quickMemos[0].id);
-  }
+  if (quickMemos.length === 0) createNewMemo();
+  else loadMemoToEdit(quickMemos[0].id);
 
   initMemoResizer();
 }
@@ -1328,7 +1234,6 @@ function initQuickMemo() {
 function applyMemoState(isOpen) {
   const memoSection = document.getElementById('memoSection');
   const memoBody = document.getElementById('memoBody');
-
   if (isOpen) {
     memoSection.classList.remove('collapsed');
     memoSection.style.height = `${lastExpandedHeight}px`;
@@ -1356,14 +1261,12 @@ function initMemoResizer() {
     e.preventDefault();
     startY = e.clientY;
     startHeight = parseInt(document.defaultView.getComputedStyle(memoSection).height, 10);
-    
     document.addEventListener('mousemove', doDrag);
     document.addEventListener('mouseup', stopDrag);
   });
 
   function doDrag(e) {
     let newHeight = startHeight + (startY - e.clientY);
-    
     if (newHeight < 70) {
       memoSection.classList.add('collapsed');
       memoSection.style.height = '48px';
@@ -1375,7 +1278,6 @@ function initMemoResizer() {
       memoToggle.checked = true;
       document.getElementById('memoBody').style.display = 'flex';
       localStorage.setItem('oneul_quick_memo_open', 'true');
-      
       if (newHeight > 380) newHeight = 380;
       memoSection.style.height = `${newHeight}px`;
       lastExpandedHeight = newHeight;
@@ -1385,9 +1287,7 @@ function initMemoResizer() {
   function stopDrag() {
     document.removeEventListener('mousemove', doDrag);
     document.removeEventListener('mouseup', stopDrag);
-    if (memoToggle.checked) {
-      localStorage.setItem('oneul_quick_memo_height', lastExpandedHeight);
-    }
+    if (memoToggle.checked) localStorage.setItem('oneul_quick_memo_height', lastExpandedHeight);
   }
 }
 
@@ -1421,12 +1321,7 @@ function saveCurrentMemo() {
       quickMemos[index].updatedAt = new Date().toISOString();
     }
   } else {
-    let newMemo = {
-      id: 'memo_' + Date.now(),
-      title: title,
-      content: content,
-      updatedAt: new Date().toISOString()
-    };
+    let newMemo = { id: 'memo_' + Date.now(), title: title, content: content, updatedAt: new Date().toISOString() };
     quickMemos.unshift(newMemo);
     document.getElementById('currentMemoId').value = newMemo.id;
   }
@@ -1438,7 +1333,6 @@ function saveCurrentMemo() {
 function loadMemoToEdit(id) {
   const target = quickMemos.find(m => m.id === id);
   if (!target) return;
-
   document.getElementById('currentMemoId').value = target.id;
   document.getElementById('memoTitleInput').value = target.title;
   document.getElementById('memoContentInput').value = target.content;
@@ -1451,12 +1345,8 @@ function deleteMemo(id, e) {
     quickMemos = quickMemos.filter(m => m.id !== id);
     localStorage.setItem('oneul_quick_memos_v2', JSON.stringify(quickMemos));
     showToast('메모가 삭제되었습니다.');
-    
-    if (quickMemos.length > 0) {
-      loadMemoToEdit(quickMemos[0].id);
-    } else {
-      createNewMemo();
-    }
+    if (quickMemos.length > 0) loadMemoToEdit(quickMemos[0].id);
+    else createNewMemo();
     renderMemoList();
   });
 }
@@ -1464,12 +1354,9 @@ function deleteMemo(id, e) {
 function renderMemoList() {
   const container = document.getElementById('memoListContainer');
   container.innerHTML = '';
-
   if (quickMemos.length === 0) {
-    container.innerHTML = `<div style="text-align:center; color:#AAA; font-size:11px; margin:10px 0;">저장된 메모가 없습니다.</div>`;
-    return;
+    container.innerHTML = `<div style="text-align:center; color:#AAA; font-size:11px; margin:10px 0;">저장된 메모가 없습니다.</div>`; return;
   }
-
   quickMemos.forEach(m => {
     const card = document.createElement('div');
     card.className = 'memo-card';
@@ -1497,9 +1384,7 @@ window.onload = () => {
   initQuickMemo();
 
   if (apiKey && calId) {
-    setTimeout(() => {
-      checkAndRefreshToken();
-    }, 300);
+    setTimeout(() => { checkAndRefreshToken(); }, 300);
   }
 };
 </script>
