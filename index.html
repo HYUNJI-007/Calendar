@@ -225,12 +225,12 @@
           <!-- 하트 버튼 삭제 및 정렬된 버튼 그룹 -->
           <div class="btn-group">
               <!-- 1. 집 (구글 캘린더 홈 이동) -->
-              <button class="icon-btn" id="addBtn" style="background:var(--accent); color:white; border:none;" onclick="window.open('https://calendar.google.com', '_blank')" title="구글 캘린더 홈으로 이동">
-                🏠
+              <button class="icon-btn" id="addBtn" style="background:var(--accent); color:white; border:none;" onclick="window.open('https://calendar.google.com', '_blank')" title="구글 캘린더">
+                🌷
               </button>
               
               <!-- 2. 오늘 (오늘 날짜로 이동) -->
-              <button class="icon-btn" onclick="goToToday()" title="Today">☀️</button>
+              <button class="icon-btn" onclick="goToToday()" title="Today">☁️</button>
               
               <!-- 3. 새로고침 -->
               <button id="refreshBtn" class="icon-btn" onclick="handleRefresh()" title="새로고침">
@@ -432,7 +432,7 @@ let lastExpandedHeight = parseInt(localStorage.getItem('oneul_quick_memo_height'
 const filterConfig = {
   '전체': { emoji: '🌸', bg: '#FFE8EE', color: '#E0658B' },
   'Wee': { emoji: '🔮', bg: '#EFEAF8', color: '#8265BD' },
-  '순회': { emoji: '☁️', bg: '#E3F2FD', color: '#3A86C8' },
+  '순회': { emoji: '✈️', bg: '#E3F2FD', color: '#3A86C8' },
   'To Do': { emoji: '🍀', bg: '#E8F5E9', color: '#43A047' },
   'default': { emoji: '📌', bg: '#FFE8EE', color: '#E0658B' }
 };
@@ -445,7 +445,7 @@ function goToToday() {
   setFormInputsToDate(selectedDateStr);
   renderCalendar();
   renderPanelContent();
-  showToast('오늘 날짜로 이동했습니다 ☀️');
+  showToast('오늘 날짜로 이동했습니다 ☁️');
 }
 
 /* ===== 공통 토스트 알림 함수 ===== */
