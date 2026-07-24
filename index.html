@@ -96,8 +96,8 @@
 
   .cheer-quote-bar { text-align: center; font-size: 11.5px; font-weight: 600; color: var(--text-sub); padding-top: 10px; margin-top: 4px; border-top: 1px dashed var(--border); flex-shrink: 0; }
 
-  .btn-group { display: flex; gap: 8px; flex-shrink: 0; }
-  .icon-btn { width: 36px; height: 36px; border-radius: 12px; border: 1px solid var(--border); background: #FFFFFF; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 16px; text-decoration: none; }
+  .btn-group { display: flex; gap: 8px; flex-shrink: 0; align-items: center; }
+  .icon-btn { width: 36px; height: 36px; border-radius: 12px; border: 1px solid var(--border); background: #FFFFFF; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 16px; text-decoration: none; box-sizing: border-box; }
   .icon-btn:hover { background: var(--accent-light); color: var(--accent); }
 
   .panel-tabs { display: flex; gap: 4px; margin-bottom: 16px; background: #EAEAEF; padding: 3px; border-radius: 10px; flex-shrink: 0; }
@@ -221,21 +221,24 @@
               <button class="nav-btn" onclick="changeMonth(1)">❯</button>
           </div>
           <div class="btn-group">
-              <!-- ✨ 추가된 '오늘 날짜로 이동' 버튼 -->
+              <!-- ✨ '오늘 날짜로 이동' 버튼 -->
               <button class="icon-btn" onclick="goToToday()" title="오늘 날짜로 이동">☀️</button>
               
-              <!-- ✨ 추가된 'Wee-it 연동 사이트 이동' 버튼 (href에 이동할 실제 URL 주소를 입력해주세요) -->
-              <a href="C:\Users\user\Desktop\Wee-It_2026.html" class="icon-btn" target="_blank" rel="noopener noreferrer" title="Wee-it 이동">🤍</a
+              <!-- ✨ 수정된 'Wee-it 연동' 버튼 (로컬 파일 실행) -->
+              <button class="icon-btn" onclick="openLocalWeeIt()" title="Wee-it 이동">🤍</button>
+              
+              <!-- ✨ 수정된 '구글 캘린더 홈 이동' 버튼 -->
               <button class="icon-btn" id="addBtn" style="background:var(--accent); color:white; border:none;" onclick="window.open('https://calendar.google.com', '_blank')" title="구글 캘린더 홈으로 이동">
                 🏠
               </button>
-              <button id="refreshBtn" class="icon-btn" onclick="handleRefresh()">
+              
+              <button id="refreshBtn" class="icon-btn" onclick="handleRefresh()" title="새로고침">
                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="3" fill="none"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
               </button>
-              <button class="icon-btn" onclick="openConfig()">
+              <button class="icon-btn" onclick="openConfig()" title="설정">
                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="3" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
               </button>
-              <button class="icon-btn" id="listToggleBtn" style="background:var(--accent-light); color:var(--accent); border:none;" onclick="toggleRightPanel('list')">
+              <button class="icon-btn" id="listToggleBtn" style="background:var(--accent-light); color:var(--accent); border:none;" onclick="toggleRightPanel('list')" title="상세보기 패널 열기">
                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="3" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
               </button>
           </div>
@@ -438,6 +441,12 @@ const filterConfig = {
   'default': { emoji: '📌', bg: '#FFE8EE', color: '#E0658B' }
 };
 
+/* ===== 로컬 파일 열기 (Wee-it) 함수 ===== */
+function openLocalWeeIt() {
+  const filePath = "file:///C:/Users/user/Desktop/Wee-It_2026.html";
+  window.open(filePath, '_blank');
+}
+
 /* ===== 오늘 날짜 이동 함수 ===== */
 function goToToday() {
   const now = new Date();
@@ -500,7 +509,6 @@ function initOAuth() {
         if (response.access_token) {
           accessToken = response.access_token;
           localStorage.setItem('gcal_token', accessToken);
-          // 토큰 만료 시간 계산 (발급 후 약 55분 뒤)
           const expireTime = Date.now() + 3300 * 1000;
           localStorage.setItem('gcal_token_expires', expireTime);
 
@@ -513,14 +521,12 @@ function initOAuth() {
   }
 }
 
-// 자동 로그인/토큰 백그라운드 갱신 함수
 function checkAndRefreshToken(forceAuth = false) {
   const expiresAt = localStorage.getItem('gcal_token_expires');
   const isExpired = !expiresAt || Date.now() > parseInt(expiresAt);
 
   if (!accessToken || isExpired) {
     if (tokenClient) {
-      // prompt: ''를 통해 로그인 팝업 창 없이 세션 갱신 시도
       try {
         tokenClient.requestAccessToken({ prompt: '' });
       } catch (e) {
@@ -536,7 +542,7 @@ function handleAuth() {
   if (!clientId) { showToast('Client ID를 먼저 입력하고 저장해 주세요.'); return; }
   if (!tokenClient) initOAuth();
   if (tokenClient) {
-    tokenClient.requestAccessToken(); // 수동 로그인 버튼을 누르면 팝업창 오픈
+    tokenClient.requestAccessToken();
   }
 }
 
@@ -1491,7 +1497,6 @@ window.onload = () => {
   initQuickMemo();
 
   if (apiKey && calId) {
-    // 페이지 진입 시 자동으로 백그라운드 토큰 점검 및 데이터 호출 실행
     setTimeout(() => {
       checkAndRefreshToken();
     }, 300);
