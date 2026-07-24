@@ -227,8 +227,8 @@
                 🏠
               </button>
               
-              <!-- 2. 하트 (Wee-it 로컬 파일 선택창 열기) -->
-              <button class="icon-btn" onclick="openLocalWeeIt()" title="Wee-it 파일 열기">🤍</button>
+              <!-- 2. 하트 (단순 아이콘 버튼) -->
+              <button class="icon-btn" title="Heart">🤍</button>
               
               <!-- 3. 오늘 (오늘 날짜로 이동) -->
               <button class="icon-btn" onclick="goToToday()" title="Today">☀️</button>
@@ -366,9 +366,6 @@
   </div>
 </div>
 
-<!-- 숨겨진 파일 입력창 (Wee-it 로컬 파일 선택용) -->
-<input type="file" id="weeItFileInput" accept=".html,.htm" style="display:none;" onchange="handleFileSelect(event)">
-
 <div class="modal-overlay" id="editModal">
   <div class="modal-card">
     <h4 style="font-size:14px; font-weight:800; color:var(--text-main);">📅 일정 정보 수정</h4>
@@ -440,22 +437,6 @@ const filterConfig = {
   'To Do': { emoji: '🍀', bg: '#E8F5E9', color: '#43A047' },
   'default': { emoji: '📌', bg: '#FFE8EE', color: '#E0658B' }
 };
-
-/* ===== ✨ 하트(🤍) 클릭 시 파일 탐색기 열기 구현 ===== */
-function openLocalWeeIt() {
-  // 탐색기(파일 선택창) 열기
-  document.getElementById('weeItFileInput').click();
-}
-
-function handleFileSelect(event) {
-  const file = event.target.files[0];
-  if (file) {
-    // 선택된 로컬 HTML 파일을 브라우저 메모리에 로드하여 새 탭으로 실행
-    const fileURL = URL.createObjectURL(file);
-    window.open(fileURL, '_blank');
-    showToast('Wee-it 파일을 열었습니다 🤍');
-  }
-}
 
 /* ===== 오늘 날짜 이동 함수 ===== */
 function goToToday() {
