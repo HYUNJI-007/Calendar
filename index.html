@@ -225,12 +225,10 @@
           <!-- 하트 버튼 삭제 및 정렬된 버튼 그룹 -->
           <div class="btn-group">
               <!-- 1. 집 (구글 캘린더 홈 이동) -->
-              <button class="icon-btn" id="addBtn" style="background:var(--accent); color:white; border:none;" onclick="window.open('https://calendar.google.com', '_blank')" title="구글 캘린더">
-                🌷
-              </button>
+              <button class="icon-btn" id="addBtn" style="background:var(--accent); color:white; border:none;" onclick="window.open('https://calendar.google.com', '_blank')" title="구글 캘린더">🌼</button>
               
               <!-- 2. 오늘 (오늘 날짜로 이동) -->
-              <button class="icon-btn" onclick="goToToday()" title="Today">☁️</button>
+              <button class="icon-btn" onclick="goToToday()" title="Today">🌷</button>
               
               <!-- 3. 새로고침 -->
               <button id="refreshBtn" class="icon-btn" onclick="handleRefresh()" title="새로고침">
@@ -277,7 +275,7 @@
           <div id="allTabContent" style="flex:1; min-height:0; overflow-y:auto; padding-right:2px; margin-bottom: 10px;">
             <div class="section-subtitle">📅 일정</div>
             <div id="allEventsList"></div>
-            <div class="section-subtitle" style="margin-top:16px;">🍀 To Do(Tasks)</div>
+            <div class="section-subtitle" style="margin-top:16px;">🍀 To Do</div>
             <div id="allTodoList"></div>
           </div>
 
@@ -308,7 +306,7 @@
           <div id="todoTabContent" style="display:none; flex:1; min-height:0; flex-direction:column; overflow:hidden; margin-bottom: 10px;">
             <div class="todo-form">
               <input type="text" id="todoInput" class="todo-input" placeholder="오늘 할 일 입력 ☘️">
-              <input type="text" id="todoDetailInput" class="todo-input" placeholder="세부 메모 (선택)">
+              <input type="text" id="todoDetailInput" class="todo-input" placeholder="세부 메모">
               <div class="todo-row">
                 <input type="date" id="todoDateInput" class="todo-date-input">
                 <button class="todo-add-btn" id="todoAddBtn" onclick="addTodo()">추가</button>
